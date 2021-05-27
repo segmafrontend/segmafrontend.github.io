@@ -1,25 +1,1424 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
 
 
-{% block title %}{{ page.title }} | {{ title }}{% endblock %}
-
-{% block page_class %}page-post-detail{% endblock %}
 
 
-{% block content %}
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.4.1" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.4.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.4.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.4.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.4.1" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.4.1',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="常用的遍历方法有哪些？每种适用于什么场景，各有什么优缺点？">
+<meta name="keywords" content="CodeReview,总结">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CodeReview问题与总结第一期">
+<meta property="og:url" content="https://segmafrontend.github.io/2018/09/11/CodeReview问题与总结第一期/index.html">
+<meta property="og:site_name" content="思考的豆芽">
+<meta property="og:description" content="常用的遍历方法有哪些？每种适用于什么场景，各有什么优缺点？">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://ww2.sinaimg.cn/large/005YhI8igy1fv5p3zefoej30xc0kuq38">
+<meta property="og:updated_time" content="2021-05-27T07:53:30.005Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="CodeReview问题与总结第一期">
+<meta name="twitter:description" content="常用的遍历方法有哪些？每种适用于什么场景，各有什么优缺点？">
+<meta name="twitter:image" content="https://ww2.sinaimg.cn/large/005YhI8igy1fv5p3zefoej30xc0kuq38">
+
+
+
+
+
+
+  <link rel="canonical" href="https://segmafrontend.github.io/2018/09/11/CodeReview问题与总结第一期/">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>CodeReview问题与总结第一期 | 思考的豆芽</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">思考的豆芽</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">技术分享</p>
+      
+    
   </div>
 
-{% endblock %}
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://segmafrontend.github.io/2018/09/11/CodeReview问题与总结第一期/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="豆芽">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="思考的豆芽">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">CodeReview问题与总结第一期
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-09-11 16:00:00" itemprop="dateCreated datePublished" datetime="2018-09-11T16:00:00+08:00">2018-09-11</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2021-05-27 15:53:30" itemprop="dateModified" datetime="2021-05-27T15:53:30+08:00">2021-05-27</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/CodeReview/" itemprop="url" rel="index"><span itemprop="name">CodeReview</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="常用的遍历方法有哪些？每种适用于什么场景，各有什么优缺点？"><a href="#常用的遍历方法有哪些？每种适用于什么场景，各有什么优缺点？" class="headerlink" title="常用的遍历方法有哪些？每种适用于什么场景，各有什么优缺点？"></a>常用的遍历方法有哪些？每种适用于什么场景，各有什么优缺点？</h2><a id="more"></a>
+<h3 id="常用遍历方法"><a href="#常用遍历方法" class="headerlink" title="常用遍历方法"></a>常用遍历方法</h3><h4 id="for循环"><a href="#for循环" class="headerlink" title="for循环"></a>for循环</h4><p><strong>语法：</strong></p>
+<blockquote>
+<p>for (语句 1; 语句 2; 语句 3)   {   被执行的代码块   }<br>语句 1 在循环（代码块）开始前执行<br>语句 2 定义运行循环（代码块）的条件<br>语句 3 在循环（代码块）已被执行之后执行  </p>
+</blockquote>
+<h4 id="for…in"><a href="#for…in" class="headerlink" title="for…in"></a>for…in</h4><p><code>for...in</code>语句以任意顺序遍历一个对象的可枚举属性。对于每个不同的属性，语句都会被执行。</p>
+<p><strong>语法：</strong> </p>
+<blockquote>
+<p>for (variable in object) {…}<br>  variable：在每次迭代时，将不同的属性名分配给变量。<br>  object：被迭代枚举其属性的对象。</p>
+</blockquote>
+<p><strong>注意：<code>for...in</code>不应该用于迭代一个 Array</strong></p>
+<ul>
+<li><code>for...in</code>不仅可以遍历数字键名，还会遍历手动添加的其他键，甚至包括原型链上的键。（即：<code>for...in</code>循环语句将返回所有可枚举属性，包括非整数类型的名称和继承的那些。）</li>
+<li>不能保证<code>for...in</code>将以任何特定的顺序返回索引。</li>
+</ul>
+<p><strong>应用：</strong><br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = &#123;<span class="attr">a</span>:<span class="number">1</span>, <span class="attr">b</span>:<span class="number">2</span>, <span class="attr">c</span>:<span class="number">3</span>&#125;;</span><br><span class="line">    </span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> prop <span class="keyword">in</span> obj) &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">"obj."</span> + prop + <span class="string">" = "</span> + obj[prop]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h4 id="for…of"><a href="#for…of" class="headerlink" title="for…of"></a>for…of</h4><p><code>for...of</code>语句在可迭代对象（包括 Array，Map，Set，String，TypedArray，arguments 对象等等）上创建一个迭代循环，调用自定义迭代钩子，并为每个不同属性的值执行语句。</p>
+<p><strong>语法：</strong></p>
+<blockquote>
+<p>for (variable of iterable) {<br>      //statements<br>  }<br>  variable：在每次迭代中，将不同属性的值分配给变量。<br>  iterable：可枚举其枚举属性的对象。</p>
+</blockquote>
+<p><strong>注意：可以使用<code>break</code>跳出循环</strong><br><strong>应用：</strong><br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> iterable = [<span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span>];</span><br><span class="line">   </span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">let</span> a <span class="keyword">of</span> iterable)&#123;</span><br><span class="line">  <span class="keyword">if</span>(a &gt; <span class="number">20</span>) &#123;</span><br><span class="line">   	<span class="keyword">break</span></span><br><span class="line">  &#125;</span><br><span class="line">   	<span class="built_in">console</span>.log(a)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 10</span></span><br><span class="line"><span class="comment">// 20</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="forEach"><a href="#forEach" class="headerlink" title="forEach()"></a>forEach()</h4><p><code>forEach</code>方法对数组的每个元素执行一次提供的函数。<br><strong>语法：</strong></p>
+<blockquote>
+<p>array.forEach(callback(currentValue, index, array){<br> //do something<br> }, this)<br> array.forEach(callback[, thisArg])  </p>
+</blockquote>
+<p><strong>参数：</strong> </p>
+<blockquote>
+<p>currentValue(当前值)：数组中正在处理的当前元素。<br> index(索引)：数组中正在处理的当前元素的索引。<br> array：forEach()方法正在操作的数组。<br> thisArg：可选参数。当执行回调 函数时用作this的值(参考对象)。</p>
+</blockquote>
+<p><strong>应用：</strong><br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//打印数组</span></span><br><span class="line"><span class="keyword">const</span> arr = [<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'c'</span>];</span><br><span class="line"></span><br><span class="line">arr.forEach( <span class="function"><span class="params">element</span> =&gt;</span> <span class="built_in">console</span>.log(element));</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//复制对象</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">copy</span>(<span class="params">obj</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> copy = <span class="built_in">Object</span>.create(<span class="built_in">Object</span>.getPrototypeOf(obj));</span><br><span class="line">  <span class="keyword">var</span> propNames = <span class="built_in">Object</span>.getOwnPropertyNames(obj);</span><br><span class="line"></span><br><span class="line">  propNames.forEach(<span class="function"><span class="keyword">function</span>(<span class="params">name</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> desc = <span class="built_in">Object</span>.getOwnPropertyDescriptor(obj, name);</span><br><span class="line">    <span class="built_in">Object</span>.defineProperty(copy, name, desc);</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> copy;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> obj1 = &#123; <span class="attr">a</span>: <span class="number">1</span>, <span class="attr">b</span>: <span class="number">2</span> &#125;;</span><br><span class="line"><span class="keyword">var</span> obj2 = copy(obj1);</span><br></pre></td></tr></table></figure>
+<p><strong>缺点：</strong><br>不能中途跳出循环，如果数组在迭代时被修改了，则其他元素会被跳过。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> words = [<span class="string">"one"</span>, <span class="string">"two"</span>, <span class="string">"three"</span>, <span class="string">"four"</span>];</span><br><span class="line">words.forEach(<span class="function"><span class="keyword">function</span>(<span class="params">word</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(word);</span><br><span class="line">  <span class="keyword">if</span> (word === <span class="string">"two"</span>) &#123;</span><br><span class="line">    words.shift();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// one</span></span><br><span class="line"><span class="comment">// two</span></span><br><span class="line"><span class="comment">// four</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="map"><a href="#map" class="headerlink" title="map()"></a>map()</h4><p><code>map</code>方法创建一个新数组，其结果是该数组中的每个元素都调用一个提供的函数后返回的结果。<br><strong>语法：</strong></p>
+<blockquote>
+<p>arr.map(function callback(currentValue, index, array) {<br>     // Return element for new_array<br>  }[, thisArg])</p>
+</blockquote>
+<p><strong>参数：</strong></p>
+<blockquote>
+<p>callback： 生成新数组元素的函数，使用三个参数：<br>currentValue callback： 的第一个参数，数组中正在处理的当前元素。<br>index callback： 的第二个参数，数组中正在处理的当前元素的索引。<br>array callback： 的第三个参数，map方法被调用的数组。<br>thisArg： 可选的。执行 callback 函数时 使用的this 值。</p>
+</blockquote>
+<p><strong>返回值：</strong><br>一个新数组，每个元素都是回调函数的结果。</p>
+<p><strong>应用：</strong><br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//重新格式化数组</span></span><br><span class="line"><span class="keyword">var</span> numbers = [<span class="number">1</span>, <span class="number">4</span>, <span class="number">9</span>];</span><br><span class="line"><span class="keyword">var</span> roots = numbers.map(<span class="built_in">Math</span>.sqrt);</span><br><span class="line"><span class="comment">// roots的值为[1, 2, 3], numbers的值仍为[1, 4, 9]</span></span><br></pre></td></tr></table></figure></p>
+<p><strong>缺点：</strong> 不能中途跳出循环。</p>
+<h3 id="性能测试"><a href="#性能测试" class="headerlink" title="性能测试"></a>性能测试</h3><p>测试环境：node v9.8.0<br>测试代码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">测试环境：node v9<span class="number">.8</span><span class="number">.0</span></span><br><span class="line"></span><br><span class="line">JavaScript</span><br><span class="line"><span class="keyword">var</span> number = <span class="number">100</span>; <span class="comment">// array大小</span></span><br><span class="line"><span class="keyword">var</span> array = [];</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; number; i++) &#123;</span><br><span class="line">    array[i] = i + <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> len = array.length;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'数组长度为：'</span>, number)</span><br><span class="line"><span class="comment">// 正常for循环</span></span><br><span class="line"><span class="built_in">console</span>.time(<span class="string">'normal for'</span>);</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; len; i++) &#123;</span><br><span class="line">    array[i] + <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.timeEnd(<span class="string">'normal for'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 倒序for循环</span></span><br><span class="line"><span class="built_in">console</span>.time(<span class="string">'reverse for'</span>);</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> i = len - <span class="number">1</span>; i--;) &#123;</span><br><span class="line">    array[i] + <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.timeEnd(<span class="string">'reverse for'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// while循环</span></span><br><span class="line"><span class="built_in">console</span>.time(<span class="string">'while'</span>);</span><br><span class="line"><span class="keyword">let</span> i = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">while</span> (i &lt; len) &#123;</span><br><span class="line">    array[i] + <span class="number">1</span>;</span><br><span class="line">    i++;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.timeEnd(<span class="string">'while'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// for-in循环</span></span><br><span class="line"><span class="built_in">console</span>.time(<span class="string">'for-in'</span>);</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> i <span class="keyword">in</span> array) &#123;</span><br><span class="line">    array[i] + <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.timeEnd(<span class="string">'for-in'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// for each 循环</span></span><br><span class="line"><span class="built_in">console</span>.time(<span class="string">"for each"</span>);</span><br><span class="line">array.forEach(<span class="function"><span class="params">e</span> =&gt;</span> e + <span class="number">1</span>);</span><br><span class="line"><span class="built_in">console</span>.timeEnd(<span class="string">"for each"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// map循环</span></span><br><span class="line"><span class="built_in">console</span>.time(<span class="string">"map"</span>);</span><br><span class="line">array.map(<span class="function"><span class="params">e</span> =&gt;</span> e + <span class="number">1</span>);</span><br><span class="line"><span class="built_in">console</span>.timeEnd(<span class="string">"map"</span>)</span><br></pre></td></tr></table></figure>
+<p>测试结果(ms为单位)：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">数组长度</th>
+<th style="text-align:center">100</th>
+<th style="text-align:center">1000</th>
+<th style="text-align:center">10000</th>
+<th style="text-align:center">100000</th>
+<th style="text-align:center">1000000</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">普通for循环</td>
+<td style="text-align:center">0.101</td>
+<td style="text-align:center">0.125</td>
+<td style="text-align:center">0.343</td>
+<td style="text-align:center">0.224</td>
+<td style="text-align:center">4.778</td>
+</tr>
+<tr>
+<td style="text-align:center">倒序for循环</td>
+<td style="text-align:center">0.009</td>
+<td style="text-align:center">0.030</td>
+<td style="text-align:center">0.255</td>
+<td style="text-align:center">8.606</td>
+<td style="text-align:center">4.391</td>
+</tr>
+<tr>
+<td style="text-align:center">while循环</td>
+<td style="text-align:center">0.007</td>
+<td style="text-align:center">0.028</td>
+<td style="text-align:center">0.24</td>
+<td style="text-align:center">23.957</td>
+<td style="text-align:center">4.445</td>
+</tr>
+<tr>
+<td style="text-align:center">for-in</td>
+<td style="text-align:center">0.032</td>
+<td style="text-align:center">0.351</td>
+<td style="text-align:center">2.466</td>
+<td style="text-align:center">22.203</td>
+<td style="text-align:center">163.261</td>
+</tr>
+<tr>
+<td style="text-align:center">for-each</td>
+<td style="text-align:center">0.030</td>
+<td style="text-align:center">0.054</td>
+<td style="text-align:center">0.296</td>
+<td style="text-align:center">1.986</td>
+<td style="text-align:center">14.921</td>
+</tr>
+<tr>
+<td style="text-align:center">map</td>
+<td style="text-align:center">0.029</td>
+<td style="text-align:center">0.055</td>
+<td style="text-align:center">0.323</td>
+<td style="text-align:center">19.905</td>
+<td style="text-align:center">189.387</td>
+</tr>
+</tbody>
+</table>
+<p><strong>思考：我们选择循环的多个角度——业务需要、代码可读性、性能。</strong><br><strong>小结：</strong> 多数情况下前端不会涉及到大数量级的运算，如果有，那么应该考虑业务代码的正确性或者是否该将运算交到后端处理，在小数据量的运算中优先考虑代码的可读性、可维护性：采用<code>for-each</code>和<code>map</code>方法。</p>
+<p><strong>延伸阅读：</strong> 为什么for-in效率相比而言这么低？<br><code>for...in</code> 一般是用在对象属性名的遍历上的，由于每次迭代操作会同时搜索实例本身的属性以及原型链上的属性，所以效率肯定低下。for-in实际上效率是最低的。这是因为 <code>for...in</code>有一些特殊的要求，具体包括：</p>
+<ol>
+<li>遍历所有属性，不仅是 <code>ownproperties</code> 也包括原型链上的所有属性。</li>
+<li>忽略 <code>enumerable</code>(可枚举) 为 <code>false</code> 的属性。</li>
+<li>必须按特定顺序遍历，先遍历所有数字键，然后按照创建属性的顺序遍历剩下的。</li>
+</ol>
+<p>相关链接：<br><a href="https://github.com/jawil/blog/issues/2" target="_blank" rel="noopener">吹毛求疵的追求优雅高性能JavaScript</a><br><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/map" target="_blank" rel="noopener">Array-MDN</a></p>
+<h2 id="Vue是如何实现响应式的？监测变化时应注意什么？"><a href="#Vue是如何实现响应式的？监测变化时应注意什么？" class="headerlink" title="Vue是如何实现响应式的？监测变化时应注意什么？"></a>Vue是如何实现响应式的？监测变化时应注意什么？</h2><h3 id="如何追踪变化"><a href="#如何追踪变化" class="headerlink" title="如何追踪变化"></a>如何追踪变化</h3><p>当你把一个普通的 JavaScript 对象传给 Vue 实例的 <code>data</code> 选项，Vue 将遍历此对象所有的属性，并使用 <code>Object.defineProperty</code> 把这些属性全部转为 getter/setter。<code>Object.defineProperty</code> 是 ES5 中一个无法 shim 的特性，这也就是为什么 Vue 不支持 IE8 以及更低版本浏览器。<br>每个组件实例都有相应的 <code>watcher</code> 实例对象，它会在组件渲染的过程中把属性记录为依赖，之后当依赖项的 <code>setter</code> 被调用时，会通知 <code>watcher</code> 重新计算，从而致使它关联的组件得以更新。</p>
+<p><img src="https://ww2.sinaimg.cn/large/005YhI8igy1fv5p3zefoej30xc0kuq38" alt="vue"></p>
+<p>监测变化时应注意：</p>
+<ol>
+<li><p>Vue 不能检测到对象属性的添加或删除。  </p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> vm = <span class="keyword">new</span> Vue(&#123;</span><br><span class="line">  data: &#123;</span><br><span class="line">    a: <span class="number">1</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">// `vm.a` 现在是响应式的</span></span><br><span class="line"></span><br><span class="line">vm.b = <span class="number">2</span></span><br><span class="line"><span class="comment">// `vm.b` 不是响应式的</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>不能检测以下变动的数组:</p>
+</li>
+</ol>
+<ul>
+<li>当你利用索引直接设置一个项时，例如：<code>vm.items[indexOfItem] = newValue</code></li>
+<li>当你修改数组的长度时，例如：<code>vm.items.length = newLength</code></li>
+</ul>
+<p>相关链接：<br><a href="https://012-cn.vuejs.org/guide/best-practices.html" target="_blank" rel="noopener">Vue细节与最佳实践</a><br><a href="https://cn.vuejs.org/v2/guide/list.html#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9" target="_blank" rel="noopener">Vue对象更改检测注意事项</a></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/CodeReview/" rel="tag"># CodeReview</a>
+          
+            <a href="/tags/总结/" rel="tag"># 总结</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+          <div class="wp_rating">
+            <div id="wpac-rating"></div>
+          </div>
+        
+
+        
+
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/09/11/博客使用说明/" rel="next" title="博客使用说明">
+                <i class="fa fa-chevron-left"></i> 博客使用说明
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/09/13/markdown/" rel="prev" title="markdown语法介绍">
+                markdown语法介绍 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+     <div id="gitalk-container"></div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">豆芽</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">19</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">8</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">16</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:630219994@qq.com" target="_blank" title="E-Mail"><i class="fa fa-fw fa-envelope"></i></a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://www.segma.tech/" target="_blank" title="西格马主页"><i class="fa fa-fw fa-home"></i></a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#常用的遍历方法有哪些？每种适用于什么场景，各有什么优缺点？"><span class="nav-number">1.</span> <span class="nav-text">常用的遍历方法有哪些？每种适用于什么场景，各有什么优缺点？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#常用遍历方法"><span class="nav-number">1.1.</span> <span class="nav-text">常用遍历方法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#for循环"><span class="nav-number">1.1.1.</span> <span class="nav-text">for循环</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#for…in"><span class="nav-number">1.1.2.</span> <span class="nav-text">for…in</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#for…of"><span class="nav-number">1.1.3.</span> <span class="nav-text">for…of</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#forEach"><span class="nav-number">1.1.4.</span> <span class="nav-text">forEach()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#map"><span class="nav-number">1.1.5.</span> <span class="nav-text">map()</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#性能测试"><span class="nav-number">1.2.</span> <span class="nav-text">性能测试</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Vue是如何实现响应式的？监测变化时应注意什么？"><span class="nav-number">2.</span> <span class="nav-text">Vue是如何实现响应式的？监测变化时应注意什么？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#如何追踪变化"><span class="nav-number">2.1.</span> <span class="nav-text">如何追踪变化</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 – <span itemprop="copyrightYear">2021</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">豆芽</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv" title="总访客量">
+      <!--<i class="fa fa-user"></i>-->
+      <span id="showDays"></span>，您是本站的第<span class="busuanzi-value" id="busuanzi_value_site_uv"></span>位访客
+    </span>
+  
+
+  <!--
+    <span class="site-pv" title="总访问量">
+      <i class="fa fa-eye"></i>
+      总访问量：<span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+   -->
+</div>
+
+<script>
+    var birthYear = 2018;
+    var birthMonth = 9;
+    var birthDate = 11;
+    var now = new Date();
+    var nowYear = new Date().getFullYear();
+    var nowMonth = new Date().getMonth() + 1;
+    var nowDate = new Date().getDate();
+    var year = nowYear - birthYear;
+    var month = nowMonth - birthMonth;
+    var date = nowDate - birthDate;
+    var innerText = '';
+    if (!year && !month) {
+        innerText = '本站已运行' + date + '天';
+    } else if (!year) {
+        innerText = '本站已运行' + month + '月' + date + '天'
+    } else {
+        innerText = '本站已运行' + year + '年' + month + '月' + date + '天'
+    }
+    document.getElementById('showDays').innerHTML=innerText;
+</script>
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.4.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.4.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.4.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.4.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.4.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.4.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.4.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+  <script src="/js/src/md5.min.js"></script>
+   <script type="text/javascript">
+        var gitalk = new Gitalk({
+          clientID: '9233fd875d01a7e80c34',
+          clientSecret: '653645b370766cc50da3808d553fd1cb1d8ace58',
+          repo: 'segmafrontend.github.io',
+          owner: 'segmafrontend',
+          admin: ['segmafrontend'],
+          id: md5(location.pathname),
+          distractionFreeMode: 'true'
+        })
+        gitalk.render('gitalk-container')
+       </script>
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+  <script type="text/javascript">
+  wpac_init = window.wpac_init || [];
+  wpac_init.push({widget: 'Rating', id: 13825,
+    el: 'wpac-rating',
+    color: 'fc6423'
+  });
+  (function() {
+    if ('WIDGETPACK_LOADED' in window) return;
+    WIDGETPACK_LOADED = true;
+    var mc = document.createElement('script');
+    mc.type = 'text/javascript';
+    mc.async = true;
+    mc.src = '//embed.widgetpack.com/widget.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(mc, s.nextSibling);
+  })();
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

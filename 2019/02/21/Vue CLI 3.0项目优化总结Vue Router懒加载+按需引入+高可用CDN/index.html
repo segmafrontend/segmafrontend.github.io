@@ -1,25 +1,1406 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
 
 
-{% block title %}{{ page.title }} | {{ title }}{% endblock %}
-
-{% block page_class %}page-post-detail{% endblock %}
 
 
-{% block content %}
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.4.1" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.4.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.4.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.4.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.4.1" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.4.1',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="前言使用Vue.js构建的单页面应用（SPA - single page application），需要引入很多的库，包括自家的router、vuex等，第三方的axios、loadash等等，不做任何配置打包之后的文件就有10M+，在第一次载入页面的时候需要加载完整的应用代码，会出现长时间的白屏，用户体验极差。 我们的目标就是减少包体积、提升加载速度，同时保证可用性、维护性、不侵入业务代码。 具">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vue cli 3.0项目优化总结Vue Router懒加载+按需引入+高可用CDN">
+<meta property="og:url" content="https://segmafrontend.github.io/2019/02/21/Vue CLI 3.0项目优化总结Vue Router懒加载+按需引入+高可用CDN/index.html">
+<meta property="og:site_name" content="思考的豆芽">
+<meta property="og:description" content="前言使用Vue.js构建的单页面应用（SPA - single page application），需要引入很多的库，包括自家的router、vuex等，第三方的axios、loadash等等，不做任何配置打包之后的文件就有10M+，在第一次载入页面的时候需要加载完整的应用代码，会出现长时间的白屏，用户体验极差。 我们的目标就是减少包体积、提升加载速度，同时保证可用性、维护性、不侵入业务代码。 具">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://cloud.githubusercontent.com/assets/302213/20628702/93f72404-b338-11e6-92d4-9a365550a701.gif">
+<meta property="og:image" content="https://i.loli.net/2019/02/21/5c6e6e6560c54.png">
+<meta property="og:image" content="https://i.loli.net/2019/02/21/5c6e6e9632593.png">
+<meta property="og:image" content="https://i.loli.net/2019/02/21/5c6e6ec61afad.png">
+<meta property="og:image" content="https://i.loli.net/2019/02/21/5c6e6eef659aa.png">
+<meta property="og:image" content="https://i.loli.net/2019/02/21/5c6e6f1cd2b91.png">
+<meta property="og:image" content="https://i.loli.net/2019/02/21/5c6e6f61d3795.png">
+<meta property="og:image" content="https://i.loli.net/2019/02/21/5c6e6f8f55d8c.png">
+<meta property="og:image" content="https://i.loli.net/2019/02/21/5c6e6fafa0886.png">
+<meta property="og:image" content="https://i.loli.net/2019/02/21/5c6e6fccf2b32.png">
+<meta property="og:image" content="https://i.loli.net/2019/02/21/5c6e6fecd967b.png">
+<meta property="og:updated_time" content="2021-05-27T07:53:30.064Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Vue cli 3.0项目优化总结Vue Router懒加载+按需引入+高可用CDN">
+<meta name="twitter:description" content="前言使用Vue.js构建的单页面应用（SPA - single page application），需要引入很多的库，包括自家的router、vuex等，第三方的axios、loadash等等，不做任何配置打包之后的文件就有10M+，在第一次载入页面的时候需要加载完整的应用代码，会出现长时间的白屏，用户体验极差。 我们的目标就是减少包体积、提升加载速度，同时保证可用性、维护性、不侵入业务代码。 具">
+<meta name="twitter:image" content="https://cloud.githubusercontent.com/assets/302213/20628702/93f72404-b338-11e6-92d4-9a365550a701.gif">
+
+
+
+
+
+
+  <link rel="canonical" href="https://segmafrontend.github.io/2019/02/21/Vue CLI 3.0项目优化总结Vue Router懒加载+按需引入+高可用CDN/">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Vue cli 3.0项目优化总结Vue Router懒加载+按需引入+高可用CDN | 思考的豆芽</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">思考的豆芽</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">技术分享</p>
+      
+    
   </div>
 
-{% endblock %}
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://segmafrontend.github.io/2019/02/21/Vue CLI 3.0项目优化总结Vue Router懒加载+按需引入+高可用CDN/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="豆芽">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="思考的豆芽">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Vue cli 3.0项目优化总结Vue Router懒加载+按需引入+高可用CDN
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-02-21 09:00:00" itemprop="dateCreated datePublished" datetime="2019-02-21T09:00:00+08:00">2019-02-21</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2021-05-27 15:53:30" itemprop="dateModified" datetime="2021-05-27T15:53:30+08:00">2021-05-27</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/optimize/" itemprop="url" rel="index"><span itemprop="name">optimize</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>使用Vue.js构建的单页面应用（SPA - single page application），需要引入很多的库，包括自家的router、vuex等，第三方的axios、loadash等等，不做任何配置打包之后的文件就有10M+，在第一次载入页面的时候需要加载完整的应用代码，会出现长时间的白屏，用户体验极差。</p>
+<p>我们的目标就是减少包体积、提升加载速度，同时保证可用性、维护性、不侵入业务代码。</p>
+<p>具体的优化方法包括：</p>
+<ul>
+<li>Vue Router 懒加载</li>
+<li>CDN引入依赖</li>
+<li>第三方库按需引入</li>
+<li>开启Gzip</li>
+<li>关闭生产环境sourceMap<a id="more"></a>
+</li>
+</ul>
+<h1 id="诊断与验证"><a href="#诊断与验证" class="headerlink" title="诊断与验证"></a>诊断与验证</h1><p>既然我们要做优化，我们必须先知道从哪些方面下手，最后如何去验证我们优化的效果。</p>
+<ul>
+<li>dist目录大小，最终打包的所有文件大小</li>
+<li>webpack-bundle-analyzer，分析包中包含的模块的大小</li>
+<li>浏览器调试工具，开启Disable Cache，查看客户端加载的资源大小以及速度</li>
+</ul>
+<p>主要介绍一下webpack-bundle-analyzer，看官方介绍：</p>
+<blockquote>
+<p>This module will help you:<br>&emsp;&emsp;1.Realize what’s really inside your bundle<br>&emsp;&emsp;2.Find out what modules make up the most of its size<br>&emsp;&emsp;3.Find modules that got there by mistake<br>&emsp;&emsp;4.Optimize it!</p>
+</blockquote>
+<h2 id="效果图"><a href="#效果图" class="headerlink" title="效果图"></a>效果图</h2><p><img src="https://cloud.githubusercontent.com/assets/302213/20628702/93f72404-b338-11e6-92d4-9a365550a701.gif" width="400px" style="margin: 0"></p>
+<h2 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h2><p>Vue CLI 3 默认支持打包报告，其实就是webpack-bundle-analyzer这个插件，使用<code>vue-cli-service build --report</code>就会在dist目录下生成一个report.html，打开这个页面就可以看到分析报告了。</p>
+<p>为了方便使用，我们可以在package.json的scripts下面新增一行：<code>&quot;report&quot;: &quot;vue-cli-service build --report&quot;</code>，这样就可以使用<code>npm run report</code>命令实现了。</p>
+<p>PS：老版本的vue cli可以通过<code>npm run build --report</code>命令，打包完成后会自动打开分析页面</p>
+<p>怎么看这个报告呢？其实很简单，每一个分区代表打包以后的一个js文件，不同的颜色代表了文件的大小，从大到小，分区里面会嵌套分区，表示包对应的子模块；左侧的菜单展示了每个js文件在stat（原始）、parsed（编译后）、gizpped（压缩后）三种情况的大小。</p>
+<h1 id="优化前后对比"><a href="#优化前后对比" class="headerlink" title="优化前后对比"></a>优化前后对比</h1><p>好不好，看疗效。我们先看结果再看过程。</p>
+<h2 id="优化前"><a href="#优化前" class="headerlink" title="优化前"></a>优化前</h2><ul>
+<li>dist目录大小为<code>13.3MB</code></li>
+<li>打包后的本地js文件(/dist/static/js/)：<img src="https://i.loli.net/2019/02/21/5c6e6e6560c54.png" style="margin:0"></li>
+<li>浏览器请求到的js文件：<img src="https://i.loli.net/2019/02/21/5c6e6e9632593.png" style="margin:0"></li>
+<li>webpack-bundle-analyzer：<br><img src="https://i.loli.net/2019/02/21/5c6e6ec61afad.png" width="200px" style="display:inline-block"><img src="https://i.loli.net/2019/02/21/5c6e6eef659aa.png" width="200px" style="display:inline-block"><img src="https://i.loli.net/2019/02/21/5c6e6f1cd2b91.png" width="200px" style="display:inline-block"><br>可以看到，实际请求时需要加载两个本地js文件一共<code>1.95M</code>，还有一个第三方js文件<code>815kb</code>，合计<code>2.74M</code>，用时接近<code>10s</code>（吐槽下公司网络）。</li>
+</ul>
+<h2 id="优化后"><a href="#优化后" class="headerlink" title="优化后"></a>优化后</h2><ul>
+<li>dist目录大小为<code>2.95MB</code></li>
+<li>打包后的本地js文件(/dist/static/js/)：<img src="https://i.loli.net/2019/02/21/5c6e6f61d3795.png" style="margin:0"></li>
+<li>浏览器请求到的js文件：<img src="https://i.loli.net/2019/02/21/5c6e6f8f55d8c.png" style="margin:0"></li>
+<li>webpack-bundle-analyzer：<br><img src="https://i.loli.net/2019/02/21/5c6e6fafa0886.png" width="200px" style="display:inline-block"><img src="https://i.loli.net/2019/02/21/5c6e6fccf2b32.png" width="200px" style="display:inline-block"><img src="https://i.loli.net/2019/02/21/5c6e6fecd967b.png" width="200px" style="display:inline-block"><br>可以看到，实际请求时请求了4个本地js文件一共<code>156.5kb</code>，CDN加载了6个包，一共<code>207.5kb</code>，合计<code>364kb</code>，用时<code>2.2s</code>，注意，优化后是包含了CDN资源的大小，网上很多网上都没有计算CDN的资源。对比优化前体积减少了<code>87%</code>，加载时间减少了<code>78%</code>（受网路影响，不太精确）。显而易见，优化效果非常显著，基本实现了秒开页面，用户体验杠杠滴！</li>
+</ul>
+<h1 id="优化过程"><a href="#优化过程" class="headerlink" title="优化过程"></a>优化过程</h1><h2 id="Vue-Router-懒加载"><a href="#Vue-Router-懒加载" class="headerlink" title="Vue Router 懒加载"></a>Vue Router 懒加载</h2><p>首先看<a href="https://router.vuejs.org/zh/guide/advanced/lazy-loading.html" target="_blank" rel="noopener">官方文档</a>，是这样描述懒加载的</p>
+<blockquote>
+<p>当打包构建应用时，Javascript 包会变得非常大，影响页面加载。如果我们能把不同路由对应的组件分割成不同的代码块，然后当路由被访问的时候才加载对应组件，这样就更加高效了。</p>
+<p>结合 Vue 的<a href="https://cn.vuejs.org/v2/guide/components-dynamic-async.html#%E5%BC%82%E6%AD%A5%E7%BB%84%E4%BB%B6" target="_blank" rel="noopener">异步组件</a>和 Webpack 的<a href="https://doc.webpack-china.org/guides/code-splitting-async/#require-ensure-/" target="_blank" rel="noopener">代码分割功能</a>，轻松实现路由组件的懒加载。</p>
+</blockquote>
+<p>实际操作非常简单，只需要把src/router.js中的组件引入方式从</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> Page404 <span class="keyword">from</span> <span class="string">'./src/Page404.vue'</span>;</span><br></pre></td></tr></table></figure>
+<p>变更为<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> page404 = <span class="function"><span class="params">()</span> =&gt;</span> <span class="keyword">import</span>(<span class="string">'./views/404.vue'</span>);</span><br></pre></td></tr></table></figure></p>
+<p>就这样，over。当然，你想自定义分块也是可以的，通过 <a href="https://webpack.js.org/guides/code-splitting-require/#chunkname" target="_blank" rel="noopener">命名 chunk</a>可以将多个组件打包到一个异步块中。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> Foo = <span class="function"><span class="params">()</span> =&gt;</span> <span class="keyword">import</span>(<span class="comment">/* webpackChunkName: "group-foo" */</span> <span class="string">'./Foo.vue'</span>)</span><br><span class="line"><span class="keyword">const</span> Bar = <span class="function"><span class="params">()</span> =&gt;</span> <span class="keyword">import</span>(<span class="comment">/* webpackChunkName: "group-foo" */</span> <span class="string">'./Bar.vue'</span>)</span><br><span class="line"><span class="keyword">const</span> Baz = <span class="function"><span class="params">()</span> =&gt;</span> <span class="keyword">import</span>(<span class="comment">/* webpackChunkName: "group-foo" */</span> <span class="string">'./Baz.vue'</span>)</span><br></pre></td></tr></table></figure>
+<p>最后的效果就是，打包后的js文件由之前的app.js和chunk-vendors.js多出了很多chunk，浏览器访问时会按需加载对应的chunk，从而减少了首屏的加载时间。</p>
+<h2 id="CDN引入依赖"><a href="#CDN引入依赖" class="headerlink" title="CDN引入依赖"></a>CDN引入依赖</h2><p>CDN引入依赖很简单，使用script标签引入对应的资源即可，但是存在几个问题：</p>
+<ol>
+<li><p>CDN服务器挂了怎么办？</p>
+<p>要是我们能检测到CDN是否成功就好了，当然能。常用的依赖包都会创建一个全局变量，通过检测这个环节变量就可以知道CDN的资源是否加载成功，不成功就加载服务器资源就可以了。缺点就是服务器上必须存放一份依赖包的备份，会增加包体积，但是并不影响访问速度。</p>
+<p>怎么知道依赖包的全局变量呢？我们用axios举例，打开axios的Github的dist目录，可以看到axios.js和axios.min.js，我们要使用的是min包，但我们要在axios.js中去查找他的全局变量。其中有这样一段代码。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(<span class="keyword">typeof</span> exports === <span class="string">'object'</span> &amp;&amp; <span class="keyword">typeof</span> <span class="built_in">module</span> === <span class="string">'object'</span>)</span><br><span class="line">		<span class="built_in">module</span>.exports = factory();</span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">if</span>(<span class="keyword">typeof</span> define === <span class="string">'function'</span> &amp;&amp; define.amd)</span><br><span class="line">		define([], factory);</span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">if</span>(<span class="keyword">typeof</span> exports === <span class="string">'object'</span>)</span><br><span class="line">		exports[<span class="string">"axios"</span>] = factory();</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">		root[<span class="string">"axios"</span>] = factory();</span><br></pre></td></tr></table></figure>
+<p>我们就可以知道axios的全局变量就是axios了，在我们的publick/index.html中就可以这样检测</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--引入axios--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"https://cdn.jsdelivr.net/npm/axios@0.18.0/dist/axios.min.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="xml">window.axios || document.write('<span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"&lt;%= BASE_URL %&gt;js/axios.min.js"</span>&gt;</span><span class="xml"><span class="tag">&lt;<span class="name">\</span>/<span class="attr">script</span>&gt;</span>')</span></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>这样就实现了高可用的CDN引入依赖了，不怕挂！</p>
+</li>
+<li><p>引入min包，没有了错误提醒，原有的业务代码中使用import引入的方式，CDN引入后无法使用了，维护两份代码？</p>
+<p>为了减小包体积提升速度，CDN需要引入min包，但是就损失依赖自带的错误提醒，只适用于生产环境，传统的做法就是维护两分代码，开发版使用完整包 或者import引入，生产环境引入min包，这对于一个懒人来说太麻烦了。</p>
+<p>要是能这样就好了，业务代码使用import方式引入依赖，开发环境加载完整包，生产环境使用CDN加载min包，完美！但是，这可能吗？当然可能，使用webpack的<a href="https://webpack.docschina.org/configuration/externals/" target="_blank" rel="noopener">externals</a>+<a href="https://github.com/jantimon/html-webpack-plugin" target="_blank" rel="noopener">html-webpack-plugin</a>就可以轻松搞定啦！</p>
+<p>externals的作用就是在使用CDN的情况下，业务代码中仍然可以使用import引入依赖。<a href="https://webpack.docschina.org/configuration/externals/" target="_blank" rel="noopener">官方文档</a>是这样说的</p>
+<blockquote>
+<p><strong>防止</strong>将某些 <code>import</code> 的包(package)<strong>打包</strong>到 bundle 中，而是在运行时(runtime)再去从外部获取这些<em>扩展依赖(external dependencies)</em>。</p>
+</blockquote>
+<p>externals在vue.config.js中的配置webpack</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">configureWebpack: <span class="function"><span class="params">config</span> =&gt;</span> &#123;</span><br><span class="line">       <span class="keyword">if</span> (process.env.NODE_ENV === <span class="string">'production'</span>) &#123;</span><br><span class="line">           config.externals = &#123;</span><br><span class="line">               <span class="string">'vue'</span>: <span class="string">'Vue'</span>,</span><br><span class="line">               <span class="string">'vuex'</span>: <span class="string">'Vuex'</span>,</span><br><span class="line">               <span class="string">'vue-router'</span>: <span class="string">'VueRouter'</span>,</span><br><span class="line">               <span class="string">'axios'</span>: <span class="string">'axios'</span>,</span><br><span class="line">               <span class="string">'vue-grid-layout'</span>: <span class="string">'VueGridLayout'</span></span><br><span class="line">           &#125;;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>配置的格式：<code>import包名: 全局变量</code>，工作原理就是webpack在读取到import语句时会从externals中去查找对应的全局变量然后加载。比如<code>&#39;vue-router&#39;: &#39;VueRouter&#39;</code>，业务代码中使用<code>import router from &#39;vue-router&#39;</code>，webpack就会去查找<code>VueRouter</code>这个全局变量。</p>
+<p>通过<code>process.env.NODE_ENV === &#39;production&#39;</code>判断生产环境才配置externals，开发环境仍然加载<code>npm install</code>安装的依赖，这样就解决了生产环境使用import引入读取CDN资源的问题，但是开发环境CDN资源仍然会加载，我们并不会用到，这种浪费浏览器资源的事情是不能容忍的，必须干掉！这时候就需要html-webpack-plugin登场了。</p>
+<p>html-webpack-plugin在Vue CLI 中主要负责处理public/index.html，具体查看<a href="https://cli.vuejs.org/zh/guide/html-and-static-assets.html" target="_blank" rel="noopener">文档</a>，在public/index.html中判断运行环境决定是否启用CDN。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;% <span class="keyword">if</span> (htmlWebpackPlugin.options.environment === <span class="string">'production'</span>) &#123; %&gt;</span><br><span class="line">&lt;!--引入axios--&gt;</span><br><span class="line">&lt;script src=<span class="string">"https://cdn.jsdelivr.net/npm/axios@0.18.0/dist/axios.min.js"</span>&gt;&lt;<span class="regexp">/script&gt;</span></span><br><span class="line"><span class="regexp">&lt;script&gt;window.axios || document.write('&lt;script src="&lt;%= BASE_URL %&gt;js/</span>axios.min.js<span class="string">"&gt;&lt;\/script&gt;')&lt;/script&gt;</span></span><br><span class="line"><span class="string">&lt;% &#125; %&gt;</span></span><br></pre></td></tr></table></figure>
+<p>这个<code>environment</code>并不是自带的，需要我们再vue.config.js中进行配置</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 在htmlWebpackPlugin中增加环境变量，在index.html中使用</span></span><br><span class="line">    chainWebpack: <span class="function"><span class="params">config</span> =&gt;</span> &#123;</span><br><span class="line">        config</span><br><span class="line">            .plugin(<span class="string">'html'</span>)</span><br><span class="line">            .tap(<span class="function"><span class="params">args</span> =&gt;</span> &#123;</span><br><span class="line">                args[<span class="number">0</span>].environment = process.env.NODE_ENV;</span><br><span class="line">                <span class="keyword">return</span> args;</span><br><span class="line">            &#125;);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>至此，就实现高可用CDN的工程化了，不需要改业务代码，不需要开发环境生产环境两套代码，三分钟解决烦恼！</p>
+</li>
+</ol>
+<h2 id="第三方库按需引入"><a href="#第三方库按需引入" class="headerlink" title="第三方库按需引入"></a>第三方库按需引入</h2><p>都有了CDN了，为什么还需要按需引入呢？举个例子，项目中需要使用lodash的deepClone和isEqual两个方法，使用前面的方法引入loadash，虽然有CDN的加持，但是我们仍然需要加载lodash的完整包，为了两个方法就要加载完整包还是有些得不偿失的，这种情况按需引入可以获得更快的加载速度。</p>
+<p>具体按需引入的方法，<a href="https://www.echartsjs.com/tutorial.html#%E5%9C%A8%20webpack%20%E4%B8%AD%E4%BD%BF%E7%94%A8%20ECharts" target="_blank" rel="noopener">echarts</a>、<a href="http://element-cn.eleme.io/#/zh-CN/component/quickstart" target="_blank" rel="noopener">element-ui</a>等官方文档都有说明，照着操作就可以了。</p>
+<p>lodash的按需引入稍微麻烦一些，需要安装<code>babel-plugin-lodash</code>这个包</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install babel-plugin-lodash -D</span><br></pre></td></tr></table></figure>
+<p>然后配置babel.config.js</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">    presets: [</span><br><span class="line">        [<span class="string">'@babel/env'</span>, &#123; <span class="string">'targets'</span>: &#123; <span class="string">'node'</span>: <span class="number">6</span> &#125;&#125;]</span><br><span class="line">    ],</span><br><span class="line">    <span class="string">'plugins'</span>: [</span><br><span class="line">        <span class="string">'lodash'</span></span><br><span class="line">    ]</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>引用部分</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> lodash <span class="keyword">from</span> <span class="string">'lodash'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> _lodash = &#123;</span><br><span class="line">    cloneDeep: lodash.cloneDeep,</span><br><span class="line">    isEqual: lodash.isEqual</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="built_in">window</span>._ = _lodash;</span><br></pre></td></tr></table></figure>
+<p>只有通过lodash的<code>.</code>运算符调用的方法才会被引入</p>
+<h2 id="开启Gzip"><a href="#开启Gzip" class="headerlink" title="开启Gzip"></a>开启Gzip</h2><p>nginx的Gzip有两种方式，一种是服务器端的Gzip，这个大家都知道，就是每次请求时服务器先压缩再返回资源，对服务器性能有一定消耗；另一种是Gzip_static，就是打包时生成<code>.gz</code>文件，每次请求时服务器直接返回.gz文件，不消耗服务器性能。两种开启一种就可以了。</p>
+<ol>
+<li><p>服务器端Gzip</p>
+<p>很简单，只需要配置一下nginx的配置就可以了</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 开启gzip</span></span><br><span class="line"><span class="attribute">gzip</span> <span class="literal">on</span>;</span><br><span class="line"><span class="comment"># gzip 压缩级别，1-10，数字越大压缩的越好，也越占用CPU</span></span><br><span class="line"><span class="attribute">gzip_comp_level</span> <span class="number">5</span>;</span><br><span class="line"><span class="comment"># 启用gzip压缩的最小文件，小于设置值的文件将不会压缩</span></span><br><span class="line"><span class="attribute">gzip_min_length</span> <span class="number">256</span>;</span><br><span class="line"><span class="comment"># 进行压缩的文件类型。javascript有多种形式。其中的值可以在 mime.types 文件中找到</span></span><br><span class="line"><span class="attribute">gzip_types</span> text/plain application/javascript application/x-javascript text/css application/xml text/javascript;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Gzip_static</p>
+<p>需要安装<a href="https://github.com/webpack-contrib/compression-webpack-plugin" target="_blank" rel="noopener">compression-webpack-plugin</a>实现打包为.gz文件，然后开启nginx的gzip_static让nginx优先查找文件的.gz版本发送给客户端。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install compression-webpack-plugin -D</span><br></pre></td></tr></table></figure>
+<p>vue.config.js中配置webpack</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> productionGzipExtensions = [<span class="string">'js'</span>, <span class="string">'css'</span>]</span><br><span class="line">configureWebpack: &#123;</span><br><span class="line">        plugins: [</span><br><span class="line">            <span class="keyword">new</span> CompressionWebpackPlugin(&#123;</span><br><span class="line">                asset: <span class="string">'[path].gz[query]'</span>,</span><br><span class="line">                algorithm: <span class="string">'gzip'</span>,</span><br><span class="line">                test: <span class="keyword">new</span> <span class="built_in">RegExp</span>(<span class="string">'\\.('</span> + productionGzipExtensions.join(<span class="string">'|'</span>) + <span class="string">')$'</span>),</span><br><span class="line">                threshold: <span class="number">10240</span>,</span><br><span class="line">                minRatio: <span class="number">0.8</span></span><br><span class="line">            &#125;)</span><br><span class="line">        ]</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>nginx配置</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 开启gzip_static</span></span><br><span class="line"><span class="attribute">gzip_static</span> <span class="literal">on</span>;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="其他配置"><a href="#其他配置" class="headerlink" title="其他配置"></a>其他配置</h2><ol>
+<li><p>配置vue.config.js关闭生成环境的sourcemap</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">productionSourceMap: <span class="literal">false</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>减少不必要的第三方依赖</p>
+</li>
+<li><p>安装依赖区分开发模式，只在开发模式使用的依赖使用dev模式安装，例如</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install xxx --save-dev</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>优化是没有极限的，不同的项目需要采用不同的优化方案，没有最好的，只有最合适的。填坑之路很漫长，但是我相信，办法总比困难多。</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+        <div class="post-widgets">
+        
+          <div class="wp_rating">
+            <div id="wpac-rating"></div>
+          </div>
+        
+
+        
+
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/09/19/大文件上传解决方案/" rel="next" title="大文件上传解决方案">
+                <i class="fa fa-chevron-left"></i> 大文件上传解决方案
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/09/06/Apollo接入Vue记录/" rel="prev" title="Apollo接入Vue记录">
+                Apollo接入Vue记录 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+     <div id="gitalk-container"></div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">豆芽</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">19</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">8</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">16</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:630219994@qq.com" target="_blank" title="E-Mail"><i class="fa fa-fw fa-envelope"></i></a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://www.segma.tech/" target="_blank" title="西格马主页"><i class="fa fa-fw fa-home"></i></a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#诊断与验证"><span class="nav-number">2.</span> <span class="nav-text">诊断与验证</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#效果图"><span class="nav-number">2.1.</span> <span class="nav-text">效果图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用方法"><span class="nav-number">2.2.</span> <span class="nav-text">使用方法</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#优化前后对比"><span class="nav-number">3.</span> <span class="nav-text">优化前后对比</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#优化前"><span class="nav-number">3.1.</span> <span class="nav-text">优化前</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#优化后"><span class="nav-number">3.2.</span> <span class="nav-text">优化后</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#优化过程"><span class="nav-number">4.</span> <span class="nav-text">优化过程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Vue-Router-懒加载"><span class="nav-number">4.1.</span> <span class="nav-text">Vue Router 懒加载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CDN引入依赖"><span class="nav-number">4.2.</span> <span class="nav-text">CDN引入依赖</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第三方库按需引入"><span class="nav-number">4.3.</span> <span class="nav-text">第三方库按需引入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#开启Gzip"><span class="nav-number">4.4.</span> <span class="nav-text">开启Gzip</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他配置"><span class="nav-number">4.5.</span> <span class="nav-text">其他配置</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 – <span itemprop="copyrightYear">2021</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">豆芽</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv" title="总访客量">
+      <!--<i class="fa fa-user"></i>-->
+      <span id="showDays"></span>，您是本站的第<span class="busuanzi-value" id="busuanzi_value_site_uv"></span>位访客
+    </span>
+  
+
+  <!--
+    <span class="site-pv" title="总访问量">
+      <i class="fa fa-eye"></i>
+      总访问量：<span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+   -->
+</div>
+
+<script>
+    var birthYear = 2018;
+    var birthMonth = 9;
+    var birthDate = 11;
+    var now = new Date();
+    var nowYear = new Date().getFullYear();
+    var nowMonth = new Date().getMonth() + 1;
+    var nowDate = new Date().getDate();
+    var year = nowYear - birthYear;
+    var month = nowMonth - birthMonth;
+    var date = nowDate - birthDate;
+    var innerText = '';
+    if (!year && !month) {
+        innerText = '本站已运行' + date + '天';
+    } else if (!year) {
+        innerText = '本站已运行' + month + '月' + date + '天'
+    } else {
+        innerText = '本站已运行' + year + '年' + month + '月' + date + '天'
+    }
+    document.getElementById('showDays').innerHTML=innerText;
+</script>
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.4.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.4.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.4.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.4.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.4.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.4.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.4.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+  <script src="/js/src/md5.min.js"></script>
+   <script type="text/javascript">
+        var gitalk = new Gitalk({
+          clientID: '9233fd875d01a7e80c34',
+          clientSecret: '653645b370766cc50da3808d553fd1cb1d8ace58',
+          repo: 'segmafrontend.github.io',
+          owner: 'segmafrontend',
+          admin: ['segmafrontend'],
+          id: md5(location.pathname),
+          distractionFreeMode: 'true'
+        })
+        gitalk.render('gitalk-container')
+       </script>
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+  <script type="text/javascript">
+  wpac_init = window.wpac_init || [];
+  wpac_init.push({widget: 'Rating', id: 13825,
+    el: 'wpac-rating',
+    color: 'fc6423'
+  });
+  (function() {
+    if ('WIDGETPACK_LOADED' in window) return;
+    WIDGETPACK_LOADED = true;
+    var mc = document.createElement('script');
+    mc.type = 'text/javascript';
+    mc.async = true;
+    mc.src = '//embed.widgetpack.com/widget.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(mc, s.nextSibling);
+  })();
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
